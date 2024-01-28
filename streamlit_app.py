@@ -1,4 +1,5 @@
 import streamlit
+from urllib.error import URLERROR
 streamlit.title('My Parents Healthy New Diner')
 streamlit.header('Breakfast Menu')
 streamlit.text('🥣Omega 3 and Blueberry Muffin')
@@ -20,11 +21,9 @@ fruit_choice = streamlit.text_input('What fruit would you like information about
 streamlit.write('The user entered ', fruit_choice)
 import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+"fruit_choice")
-# write your own comment -what does the next line do? 
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-# write your own comment - what does this do?
 streamlit.dataframe(fruityvice_normalized)
-
+streamlit.stop()
 import snowflake.connector
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
@@ -34,3 +33,4 @@ streamlit.header("The fruit list contains")
 streamlit.dataframe(my_data_rows)
 add_my_fruit = streamlit.text_input('What fruit would you like to add?','Jackfruit')
 streamlit.write('Thanks for adding ', add_my_fruit)
+my_cur.execute(insert into PC_RIVERY_DB.PUBLIC.FRUIT_LOAD_LIST values ('from streamlit'))
